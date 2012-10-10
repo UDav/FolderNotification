@@ -20,8 +20,8 @@ import java.net.URISyntaxException;
 
 public class Main {
 
-	private static SettingsFrame sf;
-	private static LogFrame lf;
+	private static SettingsDialog sf;
+	private static LogDialog lf;
 	private static ThreadController tc;
 	
 	/**
@@ -45,7 +45,7 @@ public class Main {
 		settingsItem.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (sf==null) sf = new SettingsFrame(tc);
+				if (sf==null) sf = new SettingsDialog(tc);
 				sf.setVisible(true);
 			}
 		});
@@ -62,13 +62,15 @@ public class Main {
 		trayIcon.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (lf == null) lf = new LogFrame();
+				if (lf == null) lf = new LogDialog();
 				else {
 					if (lf.isVisible()) {
 						lf.setVisible(false); 
-						lf.updateContent();
 					} else
-					if (!lf.isVisible()) lf.setVisible(true);
+					if (!lf.isVisible()) {
+						lf.setVisible(true);
+						lf.updateContent();
+					}
 				}
 			}
 		});
