@@ -8,11 +8,18 @@ public class ChangeWatcher implements Runnable {
 	private TrayIcon trayIcon;
 	private String[] currentFileList, oldFileList;
 	private String pathFolder;
+	private int timeOneCycle;
 	private boolean stoped;
 	
 	public ChangeWatcher(TrayIcon trayIcon, String pathFolder) {
 		this.trayIcon = trayIcon;
 		this.pathFolder = pathFolder;
+		this.timeOneCycle = 10000;
+	}
+	
+	public ChangeWatcher(TrayIcon trayIcon, String pathFolder, int timeOneCycle) {
+		this(trayIcon, pathFolder);
+		this.timeOneCycle = timeOneCycle;
 	}
 	
 	private void scanFolder() {
@@ -64,7 +71,7 @@ public class ChangeWatcher implements Runnable {
 						
 			oldFileList = currentFileList;
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(timeOneCycle);
 			} catch (Exception e) {e.printStackTrace();}
 		}
 	}
