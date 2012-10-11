@@ -52,21 +52,25 @@ public class ChangeWatcher implements Runnable {
 			
 			String result = "";
 			for (int i=0; i<currentFileList.length; i++){
-				if (!found[i])
+				if (!found[i]){
 					result += " + "+currentFileList[i]+"\n"; 
+					Log.addToArrayLog(pathFolder, currentFileList[i], true);
+				}
 			}
 			
 			found = compareArray(oldFileList, currentFileList);
 			
 			
 			for (int i=0; i<oldFileList.length; i++){
-				if (!found[i])
+				if (!found[i]){
 					result += " - "+oldFileList[i]+"\n"; 
+					Log.addToArrayLog(pathFolder, oldFileList[i], false);
+				}
 			}
 			
 			if (result != "") {
 				trayIcon.displayMessage("Изменения в "+pathFolder, result, TrayIcon.MessageType.INFO);
-				Log.addToLog(result);
+				//Log.addToLog(result);
 			}
 						
 			oldFileList = currentFileList;

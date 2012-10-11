@@ -58,7 +58,7 @@ public class ThreadController {
 	private void saveToFile() {
 		PrintWriter writer = null;
 	    try {
-	    	File file = new File("./settings"/*this.getClass().getResource("/res/settings").toURI()*/);
+	    	File file = new File("./settings");
 	    	writer = new PrintWriter(
 	             new OutputStreamWriter(
 	             new FileOutputStream(file), "UTF8"));
@@ -70,7 +70,7 @@ public class ThreadController {
 	}
 	
 	private void loadFromFile() throws URISyntaxException {	
-		File file = new File("./settings"/*this.getClass().getResource("/res/settings").toURI()*/);
+		File file = new File("./settings");
 		
 	    FileInputStream fis = null;
 	    InputStreamReader isr = null;

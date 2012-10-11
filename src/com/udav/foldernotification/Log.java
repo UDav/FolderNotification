@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Log {
-	
-	private static ArrayList<String> logs = new ArrayList<String>();
+	private static ArrayList<ItemLog> arrayLogs = new ArrayList<ItemLog>();
 	
 	private Log() {}
 	
@@ -32,9 +31,10 @@ public class Log {
 	      br = new BufferedReader(isr);
 
 	      String tmp;
-	      logs.clear();
+	      arrayLogs.clear();
 	      while ((tmp = br.readLine()) != null) {
-	    	  logs.add(tmp);
+	    	  String parseStr[] = tmp.split(";"); 
+	    	  arrayLogs.add(new ItemLog(parseStr[0], parseStr[1], parseStr[2], Boolean.parseBoolean(parseStr[3])));
 	      }
 	      
 	      fis.close();
@@ -48,7 +48,7 @@ public class Log {
 	    }
 	}
 	
-	private static void writeLog(String text) {
+	private static synchronized void writeLog(String text) {
 		BufferedWriter out;
 		try {
 			out = new BufferedWriter(new FileWriter("./logs", true));
@@ -59,16 +59,19 @@ public class Log {
 		}	    
 	} 
 	
-	public static synchronized void addToLog(String text){
+	public static synchronized void addToArrayLog(String pathFolder, String fileName, boolean type){
 		Date now = new Date();
 		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-	    String s = formatter.format(now);
+	    String time = formatter.format(now);
 		
-	    logs.add(s+" "+text);
-		writeLog(s+" "+text);
+	    arrayLogs.add(new ItemLog(pathFolder, fileName, time, type));
+	    
+	    writeLog(pathFolder+";"+fileName+";"+time+";"+type+"\n");
+	}
+		
+	public static ArrayList<ItemLog> getLogs() {
+		return arrayLogs;
 	}
 	
-	public static ArrayList<String> getLogs() {
-		return logs;
-	}
+	
 }
