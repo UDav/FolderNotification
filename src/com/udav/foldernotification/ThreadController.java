@@ -69,8 +69,7 @@ public class ThreadController {
 	    } catch (Exception ex) {ex.printStackTrace();} 
 	}
 	
-	private void loadFromFile() throws URISyntaxException {
-		
+	private void loadFromFile() throws URISyntaxException {	
 		File file = new File("./settings"/*this.getClass().getResource("/res/settings").toURI()*/);
 		
 	    FileInputStream fis = null;

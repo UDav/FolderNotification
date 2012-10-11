@@ -81,6 +81,8 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		Log.readLog();
+		
 		tc = new ThreadController(trayIcon);
 		
 	}
