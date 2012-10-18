@@ -50,6 +50,7 @@ public class SettingsDialog extends JDialog {
                 }
             }
         });
+        
         mainPanel.add(list);
         add = new JButton("Добавить");
         add.setPreferredSize(new Dimension(100, 25));

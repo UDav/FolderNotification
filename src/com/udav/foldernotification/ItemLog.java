@@ -4,26 +4,32 @@ class ItemLog {
 	private String pathFolder;
 	private String fileName;
 	private String time;
-	private boolean type; //true - add || false - delete
+	private boolean typeOperation; //true - add || false - delete
+	private boolean folder;
 	
-	public ItemLog(String pathFolder, String fileName, String time, boolean type){
+	public ItemLog(String pathFolder, String fileName, String time, boolean typeOperation, boolean folder){
 		this.pathFolder = pathFolder;
 		this.fileName = fileName;
 		this.time = time;
-		this.type = type;
+		this.typeOperation = typeOperation;
+		this.folder = folder;
 	}
 	
 	public boolean getType() {
-		return type;
+		return typeOperation;
+	}
+	
+	public boolean isFolder() {
+		return folder;
 	}
 	
 	public String getFullPath() {
-		return pathFolder+"\\"+fileName;
+		return pathFolder+"/"+fileName;
 	}
 	
 	public String getDescription() {
 		String strType;
-		if (type) strType = "add"; else strType = "delete";
+		if (typeOperation) strType = "add"; else strType = "delete";
 		return getFullPath()+" "+time+" "+strType;
 	}
 }

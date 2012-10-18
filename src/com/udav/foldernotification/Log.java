@@ -34,7 +34,7 @@ public class Log {
 	      arrayLogs.clear();
 	      while ((tmp = br.readLine()) != null) {
 	    	  String parseStr[] = tmp.split(";"); 
-	    	  arrayLogs.add(new ItemLog(parseStr[0], parseStr[1], parseStr[2], Boolean.parseBoolean(parseStr[3])));
+	    	  arrayLogs.add(new ItemLog(parseStr[0], parseStr[1], parseStr[2], Boolean.parseBoolean(parseStr[3]), Boolean.parseBoolean(parseStr[4])));
 	      }
 	      
 	      fis.close();
@@ -59,14 +59,14 @@ public class Log {
 		}	    
 	} 
 	
-	public static synchronized void addToArrayLog(String pathFolder, String fileName, boolean type){
+	public static synchronized void addToArrayLog(String pathFolder, String fileName, boolean type, boolean folder){
 		Date now = new Date();
 		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 	    String time = formatter.format(now);
 		
-	    arrayLogs.add(new ItemLog(pathFolder, fileName, time, type));
+	    arrayLogs.add(new ItemLog(pathFolder, fileName, time, type, folder));
 	    
-	    writeLog(pathFolder+";"+fileName+";"+time+";"+type+"\n");
+	    writeLog(pathFolder+";"+fileName+";"+time+";"+type+";"+folder+"\n");
 	}
 		
 	public static ArrayList<ItemLog> getLogs() {

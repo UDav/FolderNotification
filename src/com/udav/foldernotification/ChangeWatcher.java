@@ -29,7 +29,6 @@ public class ChangeWatcher implements Runnable {
 	
 	private boolean[] compareArray(String first[], String second[]) {
 		boolean found[] = new boolean[first.length]; 
-		
 		for (int i=0; i<first.length; i++) {
 			for (int j=0; j<second.length; j++) {
 				if (first[i].equals(second[j])) {
@@ -53,8 +52,11 @@ public class ChangeWatcher implements Runnable {
 			String result = "";
 			for (int i=0; i<currentFileList.length; i++){
 				if (!found[i]){
-					result += " + "+currentFileList[i]+"\n"; 
-					Log.addToArrayLog(pathFolder, currentFileList[i], true);
+					result += " + "+currentFileList[i]+"\n";
+					if (new File(pathFolder+"/"+currentFileList[i]).isDirectory())
+						Log.addToArrayLog(pathFolder, currentFileList[i], true, true);
+					else 
+						Log.addToArrayLog(pathFolder, currentFileList[i], true, false);
 				}
 			}
 			
@@ -64,13 +66,15 @@ public class ChangeWatcher implements Runnable {
 			for (int i=0; i<oldFileList.length; i++){
 				if (!found[i]){
 					result += " - "+oldFileList[i]+"\n"; 
-					Log.addToArrayLog(pathFolder, oldFileList[i], false);
+					if (new File(pathFolder+"/"+oldFileList[i]).isDirectory())
+						Log.addToArrayLog(pathFolder, oldFileList[i], false, true);
+					else
+						Log.addToArrayLog(pathFolder, oldFileList[i], false, false);
 				}
 			}
 			
 			if (result != "") {
 				trayIcon.displayMessage("Изменения в "+pathFolder, result, TrayIcon.MessageType.INFO);
-				//Log.addToLog(result);
 			}
 						
 			oldFileList = currentFileList;
