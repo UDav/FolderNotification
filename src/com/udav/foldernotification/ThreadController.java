@@ -18,6 +18,7 @@ public class ThreadController {
 	private ArrayList<ChangeWatcher> arrayChangeWatchers = new ArrayList<ChangeWatcher>();
 	private ArrayList<String> arrayPath = new ArrayList<String>();
 	private TrayIcon trayIcon;
+	private int interval;
 	
 	public ThreadController(TrayIcon trayIcon) {
 		this.trayIcon = trayIcon;
@@ -29,8 +30,9 @@ public class ThreadController {
 			executeThread(arrayPath.get(i));
 	}
 	
-	public void reconfigure(ArrayList<String> arrayPath){
+	public void reconfigure(ArrayList<String> arrayPath, int interval){
 		this.arrayPath = arrayPath;
+		this.interval = interval;
 		for (int i=0; i<arrayChangeWatchers.size(); i++) {
 			arrayChangeWatchers.get(i).stop();
 		}
@@ -41,7 +43,7 @@ public class ThreadController {
 	
 	private void executeThread(String path) {
 		if (new File(path).exists()) {
-			arrayChangeWatchers.add(new ChangeWatcher(trayIcon, path));
+			arrayChangeWatchers.add(new ChangeWatcher(trayIcon, path, interval));
 			new Thread(arrayChangeWatchers.get(arrayChangeWatchers.size()-1)).start();
 		}
 		

@@ -3,6 +3,7 @@ package com.udav.foldernotification;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,15 +15,19 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class SettingsDialog extends JDialog {
 	private JButton saveSettings;
 	private JButton cancel;
-	private JButton add;
+	private JButton addButton;
 	private DefaultListModel listModel;
 	private ThreadController tc;
+	private JTextField textFieldInterval;
+	private int interval;
 	
 	public SettingsDialog(ThreadController tc) {
 		this.tc = tc;
@@ -37,7 +42,7 @@ public class SettingsDialog extends JDialog {
         
         
         JPanel mainPanel = new JPanel();
-        
+        mainPanel.setLayout(new GridLayout(2, 3));
         listModel = new DefaultListModel();
         JList list = new JList(listModel);
         readSettings();
@@ -51,11 +56,16 @@ public class SettingsDialog extends JDialog {
             }
         });
         
+        mainPanel.add(new JLabel("Folders:"));
         mainPanel.add(list);
-        add = new JButton("Добавить");
-        add.setPreferredSize(new Dimension(100, 25));
-        mainPanel.add(add);
-        
+        addButton = new JButton("Добавить");
+        addButton.setPreferredSize(new Dimension(100, 25));
+        mainPanel.add(addButton);
+        mainPanel.add(new JLabel("Interval:"));
+        textFieldInterval = new JTextField();
+        textFieldInterval.setBounds(0, 0, 100, 100);
+        textFieldInterval.setText("10000");
+        mainPanel.add(textFieldInterval, null);
         
         saveSettings = new JButton("Сохранить");
         saveSettings.setPreferredSize(new Dimension(100, 25));
@@ -65,7 +75,7 @@ public class SettingsDialog extends JDialog {
         ButtonAction action = new ButtonAction();
         saveSettings.addActionListener(action);
         cancel.addActionListener(action);
-        add.addActionListener(action);
+        addButton.addActionListener(action);
         
         JPanel buttonsPanel = new JPanel(new FlowLayout());
         buttonsPanel.add(saveSettings);
@@ -83,11 +93,11 @@ public class SettingsDialog extends JDialog {
             	for (int i=0; i<listModel.size(); i++){
             		tmp.add(listModel.getElementAt(i).toString());
             	}
-            	tc.reconfigure(tmp);
+            	tc.reconfigure(tmp, Integer.parseInt(textFieldInterval.getText()));
             	dispose();
             }
             
-            if (event.getSource() == add) {
+            if (event.getSource() == addButton) {
             	JFileChooser fileAdd = new JFileChooser();
             	fileAdd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int ret = fileAdd.showDialog(null, "Добавить папку");				
