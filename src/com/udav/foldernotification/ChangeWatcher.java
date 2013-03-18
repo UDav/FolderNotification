@@ -2,11 +2,12 @@ package com.udav.foldernotification;
 
 import java.awt.TrayIcon;
 import java.io.File;
+import java.util.ArrayList;
 
 public class ChangeWatcher implements Runnable {
 
 	private TrayIcon trayIcon;
-	private String[] currentFileList, oldFileList;
+	private File[] currentFileList, oldFileList;
 	private String pathFolder;
 	private int timeOneCycle;
 	private boolean stoped;
@@ -23,11 +24,12 @@ public class ChangeWatcher implements Runnable {
 	}
 	
 	private void scanFolder() {
-		currentFileList = new File(pathFolder).list();
+		currentFileList = new File(pathFolder).listFiles();
 		
 	}
 	
-	private boolean[] compareArray(String first[], String second[]) {
+	
+	private boolean[] compareArray(File first[], File second[]) {
 		boolean found[] = new boolean[first.length]; 
 		for (int i=0; i<first.length; i++) {
 			for (int j=0; j<second.length; j++) {
@@ -42,6 +44,7 @@ public class ChangeWatcher implements Runnable {
 	@Override
 	public void run() {
 		scanFolder();
+		
 		oldFileList = currentFileList;
 		while (!stoped) {
 			scanFolder();
@@ -52,11 +55,11 @@ public class ChangeWatcher implements Runnable {
 			String result = "";
 			for (int i=0; i<currentFileList.length; i++){
 				if (!found[i]){
-					result += " + "+currentFileList[i]+"\n";
-					if (new File(pathFolder+"/"+currentFileList[i]).isDirectory())
-						Log.addToArrayLog(pathFolder, currentFileList[i], true, true);
+					result += " + "+currentFileList[i].getAbsolutePath()+"\n";
+					if (currentFileList[i].isDirectory())
+						Log.addToArrayLog(pathFolder, currentFileList[i].getName(), true, true);
 					else 
-						Log.addToArrayLog(pathFolder, currentFileList[i], true, false);
+						Log.addToArrayLog(pathFolder, currentFileList[i].getName(), true, false);
 				}
 			}
 			
@@ -65,11 +68,11 @@ public class ChangeWatcher implements Runnable {
 			
 			for (int i=0; i<oldFileList.length; i++){
 				if (!found[i]){
-					result += " - "+oldFileList[i]+"\n"; 
-					if (new File(pathFolder+"/"+oldFileList[i]).isDirectory())
-						Log.addToArrayLog(pathFolder, oldFileList[i], false, true);
+					result += " - "+oldFileList[i].getAbsolutePath()+"\n"; 
+					if (oldFileList[i].isDirectory())
+						Log.addToArrayLog(pathFolder, oldFileList[i].getName(), false, true);
 					else
-						Log.addToArrayLog(pathFolder, oldFileList[i], false, false);
+						Log.addToArrayLog(pathFolder, oldFileList[i].getName(), false, false);
 				}
 			}
 			

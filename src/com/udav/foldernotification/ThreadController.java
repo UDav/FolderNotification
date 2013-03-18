@@ -18,7 +18,7 @@ public class ThreadController {
 	private ArrayList<ChangeWatcher> arrayChangeWatchers = new ArrayList<ChangeWatcher>();
 	private ArrayList<String> arrayPath = new ArrayList<String>();
 	private TrayIcon trayIcon;
-	private int interval;
+	private int interval = 10000;
 	
 	public ThreadController(TrayIcon trayIcon) {
 		this.trayIcon = trayIcon;
@@ -49,9 +49,7 @@ public class ThreadController {
 		
 	}
 	
-	private void stopThread() {
-		
-	}
+	private void stopThread() {}
 	
 	public ArrayList<String> getSettings() {
 		return arrayPath;
